@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #faf9f7;
   --foreground: #0f172a;
 }
 
@@ -16,6 +16,11 @@
   --color-accent: #c8880d;
   --color-accent-light: #e3a72c;
   --color-crisis: #a01f2b;
+  --color-surface-warm: #f5f0e8;
+  --color-surface-cool: #eef3f8;
+  --color-surface-sage: #eef4f1;
+  --color-teal: #2a7a6f;
+  --color-teal-light: #3d9a8c;
 }
 
 body {

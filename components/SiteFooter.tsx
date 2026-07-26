@@ -2,7 +2,7 @@ import { org, crisisResources } from "@/lib/data";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-slate-200 bg-brand px-6 py-8 text-blue-100">
+    <footer className="border-t-4 border-accent bg-brand px-6 py-8 text-blue-100">
       <div className="mx-auto max-w-3xl space-y-4 text-sm">
         <p>
           <span className="font-semibold text-white">24/7 Hotline:</span>{" "}

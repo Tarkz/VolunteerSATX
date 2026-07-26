@@ -5,10 +5,9 @@ export function Hero() {
   const tel = crisisResources.hotline.replace(/[^0-9]/g, "");
 
   return (
-    <section className="bg-white px-6 py-10 md:py-14">
+    <section className="bg-gradient-to-b from-surface-cool to-background px-6 py-10 md:py-14">
       <div className="mx-auto max-w-3xl">
-        {/* Crisis first — findable in seconds */}
-        <div className="rounded-xl border-2 border-crisis/30 bg-crisis/5 px-6 py-6 md:px-8 md:py-8">
+        <div className="rounded-xl border-2 border-crisis/25 bg-white px-6 py-6 shadow-sm shadow-crisis/5 md:px-8 md:py-8">
           <p className="text-sm font-bold uppercase tracking-widest text-crisis">
             Need help now?
           </p>
@@ -21,7 +20,7 @@ export function Hero() {
               {crisisResources.hotline}
             </span>
           </a>
-          <p className="mt-3 flex items-center gap-2 text-base text-slate-700 md:text-lg">
+          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-base text-slate-700 md:text-lg">
             <MessageSquare className="h-5 w-5 flex-shrink-0 text-crisis" aria-hidden />
             Text <strong>{crisisResources.textKeyword}</strong> to{" "}
             <strong>{crisisResources.textNumber}</strong>
@@ -37,7 +36,7 @@ export function Hero() {
 
         <a
           href="#volunteer"
-          className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-brand/70 transition-colors hover:text-brand"
+          className="mt-8 inline-flex items-center gap-1.5 rounded-full border border-brand/15 bg-white px-4 py-2 text-sm font-medium text-brand transition-colors hover:border-accent/40 hover:text-accent"
         >
           Want to volunteer?
           <ArrowRight className="h-4 w-4" aria-hidden />
