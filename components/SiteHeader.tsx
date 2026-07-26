@@ -11,7 +11,7 @@ export function SiteHeader() {
         </div>
         <a
           href="#volunteer"
-          className="rounded-full bg-brand px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-light"
+          className="text-sm font-medium text-slate-500 transition-colors hover:text-brand"
         >
           Volunteer
         </a>
