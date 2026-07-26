@@ -1,0 +1,56 @@
+# One-time / manual: map volunteersatx.portfoliocameronschwach.com to Cloud Run.
+# After success, add the CNAME record shown in the job log to Cloudflare (grey cloud).
+
+name: Domain Mapping
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  map-domain:
+    runs-on: ubuntu-latest
+    env:
+      GCP_REGION: us-central1
+      SERVICE: volunteersatx-frontend
+      DOMAIN: volunteersatx.portfoliocameronschwach.com
+
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Create domain mapping
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          gcloud run domain-mappings create \
+            --project="${GCP_PROJECT_ID}" \
+            --region="${GCP_REGION}" \
+            --service="${SERVICE}" \
+            --domain="${DOMAIN}" \
+            2>&1 || gcloud run domain-mappings describe "${DOMAIN}" \
+              --project="${GCP_PROJECT_ID}" \
+              --region="${GCP_REGION}" \
+              --platform=managed
+
+      - name: Show required DNS records
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          echo "=== Add these records in Cloudflare (DNS only / grey cloud) ==="
+          gcloud run domain-mappings describe "${DOMAIN}" \
+            --project="${GCP_PROJECT_ID}" \
+            --region="${GCP_REGION}" \
+            --platform=managed \
+            --format=yaml
