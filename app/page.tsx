@@ -1,33 +1,21 @@
-import { CrisisBar } from "@/components/CrisisBar";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Hero } from "@/components/Hero";
+import { VolunteerAsk } from "@/components/VolunteerAsk";
 import { WhoWeAre } from "@/components/WhoWeAre";
-import { MissionPillars } from "@/components/MissionPillars";
-import { ImpactStats } from "@/components/ImpactStats";
-import { WarningSigns } from "@/components/WarningSigns";
-import { Programs } from "@/components/Programs";
-import { GetInvolved } from "@/components/GetInvolved";
-import { VolunteerSpotlight } from "@/components/VolunteerSpotlight";
-import { Partners } from "@/components/Partners";
+import { SignsStrip } from "@/components/SignsStrip";
 import { SiteFooter } from "@/components/SiteFooter";
 
 export default function Home() {
   return (
-    <div id="top">
-      <CrisisBar />
+    <>
       <SiteHeader />
       <main>
         <Hero />
+        <VolunteerAsk />
         <WhoWeAre />
-        <MissionPillars />
-        <ImpactStats />
-        <WarningSigns />
-        <Programs />
-        <GetInvolved />
-        <VolunteerSpotlight />
-        <Partners />
+        <SignsStrip />
       </main>
       <SiteFooter />
-    </div>
+    </>
   );
 }
