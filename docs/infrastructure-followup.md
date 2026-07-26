@@ -16,10 +16,10 @@
 | Portfolio site live | Done — `portfoliocameronschwach.com` |
 | Domain registrar | **Still Squarespace** (transfer pending) |
 | Squarespace auth code | **Blocked** — email never arrives; need support ticket |
-| VolunteerSATX GitHub secrets | **Not copied yet** |
-| WIF for `Tarkz/VolunteerSATX` | **Not extended yet** |
-| Cloud Run `volunteersatx-frontend` | **Not deployed yet** |
-| Subdomain DNS (`volunteersatx`) | **Not added yet** |
+| VolunteerSATX GitHub secrets | Done |
+| WIF for `Tarkz/VolunteerSATX` | Done |
+| Cloud Run `volunteersatx-frontend` | **Live** — https://volunteersatx-frontend-qx77h42q5q-uc.a.run.app/ |
+| Subdomain DNS (`volunteersatx`) | **Not added yet** — Phase C (GCP Console + Cloudflare) |
 
 ---
 
@@ -48,14 +48,8 @@ Required before first Cloud Run deploy.
 
 - [x] **B1.** Copy GitHub Actions secrets to [Tarkz/VolunteerSATX](https://github.com/Tarkz/VolunteerSATX/settings/secrets/actions) from ProfessionalPortfolio
 - [x] **B2.** Extend WIF provider in GCP (`github-pool` / `github-provider`) for `Tarkz/VolunteerSATX`
-- [x] **B3.** Trigger deploy (workflow run 30211650943 — deploy step succeeded; smoke check pending container fix)
-- [ ] **B4.** Confirm smoke check passes; note Cloud Run URL:
-  ```bash
-  gcloud run services describe volunteersatx-frontend \
-    --region us-central1 \
-    --project steady-circuit-453303-d0 \
-    --format='value(status.url)'
-  ```
+- [x] **B3.** Deploy succeeded (run 30212589423); smoke check green
+- [x] **B4.** Cloud Run URL: https://volunteersatx-frontend-qx77h42q5q-uc.a.run.app/
 
 ---
 
