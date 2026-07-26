@@ -46,15 +46,9 @@ Squarespace still owns registration until transfer completes. DNS already works 
 
 Required before first Cloud Run deploy.
 
-- [ ] **B1.** Copy GitHub Actions secrets to [Tarkz/VolunteerSATX](https://github.com/Tarkz/VolunteerSATX/settings/secrets/actions) from ProfessionalPortfolio:
-  - `GCP_PROJECT_ID`
-  - `GCP_WORKLOAD_IDENTITY_PROVIDER`
-  - `GCP_SERVICE_ACCOUNT_EMAIL`
-- [ ] **B2.** Extend WIF provider in GCP (`github-pool` / `github-provider`):
-  - Add `Tarkz/VolunteerSATX` to attribute condition (alongside `Tarkz/ProfessionalPortfolio`)
-  - Deploy SA unchanged: `gh-deployer@steady-circuit-453303-d0.iam.gserviceaccount.com`
-- [ ] **B3.** Trigger deploy:
-  - GitHub → VolunteerSATX → Actions → **Deploy Cloud Run** → Run workflow, or push to `main`
+- [x] **B1.** Copy GitHub Actions secrets to [Tarkz/VolunteerSATX](https://github.com/Tarkz/VolunteerSATX/settings/secrets/actions) from ProfessionalPortfolio
+- [x] **B2.** Extend WIF provider in GCP (`github-pool` / `github-provider`) for `Tarkz/VolunteerSATX`
+- [x] **B3.** Trigger deploy (workflow run 30211650943 — deploy step succeeded; smoke check pending container fix)
 - [ ] **B4.** Confirm smoke check passes; note Cloud Run URL:
   ```bash
   gcloud run services describe volunteersatx-frontend \

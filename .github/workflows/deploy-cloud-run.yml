@@ -100,7 +100,7 @@ jobs:
             --format='value(status.url)')"
           echo "GET ${URL}/"
           for i in {1..30}; do
-            STATUS="$(curl -sS -o /tmp/body -w '%{http_code}' "${URL}/" || true)"
+            STATUS="$(curl -sS --max-time 15 -o /tmp/body -w '%{http_code}' "${URL}/" || true)"
             if [[ "${STATUS}" == "200" ]]; then
               echo "OK: responded 200 after ${i} attempt(s)."
               exit 0

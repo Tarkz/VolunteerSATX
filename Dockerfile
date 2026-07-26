@@ -6,11 +6,15 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
+RUN npx next build
 
 FROM node:20-alpine AS runner
 
 WORKDIR /app
+
+ENV NODE_ENV=production
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
 
 COPY --from=builder /app/.next .next
 COPY --from=builder /app/public public
@@ -24,4 +28,4 @@ RUN npm install --production
 
 EXPOSE 3000
 
-CMD ["npx", "next", "start"]
+CMD ["npx", "next", "start", "-H", "0.0.0.0", "-p", "3000"]
