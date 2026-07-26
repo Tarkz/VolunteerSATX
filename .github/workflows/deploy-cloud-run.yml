@@ -1,0 +1,118 @@
+# Deploy VolunteerSATX mockup to Cloud Run via Workload Identity Federation.
+#
+# Prerequisites:
+# - WIF provider allows repo Tarkz/VolunteerSATX
+# - Same GCP secrets as ProfessionalPortfolio (GCP_PROJECT_ID, GCP_WIF, GCP_SA)
+#
+# After first deploy, map domain and add Cloudflare DNS:
+#   gcloud run domain-mappings create --service volunteersatx-frontend \
+#     --domain volunteersatx.portfoliocameronschwach.com --region us-central1
+#   Add CNAME in Cloudflare (grey cloud) from GCP output.
+
+name: Deploy Cloud Run
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-volunteersatx
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      GCP_REGION: ${{ vars.GCP_REGION != '' && vars.GCP_REGION || 'us-central1' }}
+      AR_REPOSITORY: ${{ vars.AR_REPOSITORY != '' && vars.AR_REPOSITORY || 'portfolio' }}
+      SERVICE: volunteersatx-frontend
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Validate configuration
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GCP_WIF: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          GCP_SA: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+        run: |
+          set -euo pipefail
+          missing() {
+            echo "::error::Missing Actions secret '$1'"
+            exit 1
+          }
+          [[ -n "${GCP_PROJECT_ID:-}" ]] || missing "GCP_PROJECT_ID"
+          [[ -n "${GCP_WIF:-}" ]] || missing "GCP_WORKLOAD_IDENTITY_PROVIDER"
+          [[ -n "${GCP_SA:-}" ]] || missing "GCP_SERVICE_ACCOUNT_EMAIL"
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker "${GCP_REGION}-docker.pkg.dev" --quiet
+
+      - name: Build and push image
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          IMAGE="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT_ID}/${AR_REPOSITORY}/${SERVICE}:${GITHUB_SHA}"
+          docker build --progress=plain -t "${IMAGE}" .
+          docker push "${IMAGE}"
+          echo "IMG=${IMAGE}" >> "$GITHUB_ENV"
+
+      - name: Deploy to Cloud Run
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          gcloud run deploy "${SERVICE}" \
+            --project="${GCP_PROJECT_ID}" \
+            --region="${GCP_REGION}" \
+            --platform=managed \
+            --image="${IMG}" \
+            --allow-unauthenticated \
+            --port=3000 \
+            --min-instances=0 \
+            --max-instances=3 \
+            --verbosity=info
+
+      - name: Post-deploy smoke check
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          URL="$(gcloud run services describe "${SERVICE}" \
+            --project="${GCP_PROJECT_ID}" \
+            --region="${GCP_REGION}" \
+            --platform=managed \
+            --format='value(status.url)')"
+          echo "GET ${URL}/"
+          for i in {1..30}; do
+            STATUS="$(curl -sS -o /tmp/body -w '%{http_code}' "${URL}/" || true)"
+            if [[ "${STATUS}" == "200" ]]; then
+              echo "OK: responded 200 after ${i} attempt(s)."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Did not return 200 within ~60s. Last status=${STATUS}."
+          exit 1
+
+      - name: Failure diagnostics
+        if: failure()
+        run: |
+          echo "Typical fixes:"
+          echo "  - WIF provider must allow repo Tarkz/VolunteerSATX"
+          echo "  - Copy GCP secrets from ProfessionalPortfolio repo settings"
