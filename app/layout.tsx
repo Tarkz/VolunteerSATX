@@ -8,9 +8,9 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "VolunteerSATX — San Antonio Volunteer Hub",
+  title: "Stop Now Foundation — End Human Trafficking",
   description:
-    "Concept mockup for a modern San Antonio volunteer portal — find opportunities, connect with agencies, and make a difference.",
+    "Concept redesign mockup for Stop Now Foundation, a San Antonio nonprofit ending human trafficking through awareness, advocacy, and action. Not affiliated with the organization.",
 };
 
 export default function RootLayout({

@@ -19,7 +19,7 @@
 | VolunteerSATX GitHub secrets | Done |
 | WIF for `Tarkz/VolunteerSATX` | Done |
 | Cloud Run `volunteersatx-frontend` | **Live** — https://volunteersatx-frontend-qx77h42q5q-uc.a.run.app/ |
-| Subdomain DNS (`volunteersatx`) | **Not added yet** — Phase C (GCP Console + Cloudflare) |
+| Subdomain DNS (`volunteersatx`) | **Mapping created** — add Cloudflare CNAME (Phase C2) |
 
 ---
 
@@ -57,21 +57,13 @@ Required before first Cloud Run deploy.
 
 After Phase B deploy succeeds.
 
-- [ ] **C1.** Create Cloud Run domain mapping:
-  ```bash
-  gcloud run domain-mappings create \
-    --service volunteersatx-frontend \
-    --domain volunteersatx.portfoliocameronschwach.com \
-    --region us-central1 \
-    --project steady-circuit-453303-d0
-  ```
-- [ ] **C2.** Copy DNS records from GCP output
-- [ ] **C3.** Cloudflare → **DNS** → **Records** → Add record:
+- [x] **C1.** Create Cloud Run domain mapping (done via `gcloud.cmd` — user credentials required, not deploy SA)
+- [ ] **C2.** Cloudflare → DNS → Add record:
   - Type: **CNAME**
   - Name: `volunteersatx`
-  - Target: value from GCP (often `ghs.googlehosted.com`)
+  - Target: `ghs.googlehosted.com`
   - Proxy: **DNS only (grey cloud)**
-- [ ] **C4.** Wait for propagation; test `https://volunteersatx.portfoliocameronschwach.com`
+- [ ] **C3.** Wait for SSL provisioning (~15 min); test `https://volunteersatx.portfoliocameronschwach.com`
 
 ---
 
