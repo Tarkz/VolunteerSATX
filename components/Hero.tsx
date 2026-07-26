@@ -1,4 +1,4 @@
-import { ArrowRight, MessageSquare, Phone } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { hook, crisisResources } from "@/lib/data";
 
 export function Hero() {
@@ -7,28 +7,20 @@ export function Hero() {
   return (
     <section className="bg-gradient-to-b from-surface-cool to-background px-6 py-10 md:py-14">
       <div className="mx-auto max-w-3xl">
-        <div className="rounded-xl border-2 border-crisis/25 bg-white px-6 py-6 shadow-sm shadow-crisis/5 md:px-8 md:py-8">
-          <p className="text-sm font-bold uppercase tracking-widest text-crisis">
-            Need help now?
-          </p>
+        <p className="text-sm leading-relaxed text-slate-600">
+          Need help? Call{" "}
           <a
             href={`tel:${tel}`}
-            className="mt-2 flex items-center gap-3 text-crisis transition-opacity hover:opacity-80"
+            className="font-semibold text-brand underline-offset-2 hover:underline"
           >
-            <Phone className="h-8 w-8 flex-shrink-0 md:h-10 md:w-10" aria-hidden />
-            <span className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-              {crisisResources.hotline}
-            </span>
+            {crisisResources.hotline}
           </a>
-          <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-base text-slate-700 md:text-lg">
-            <MessageSquare className="h-5 w-5 flex-shrink-0 text-crisis" aria-hidden />
-            Text <strong>{crisisResources.textKeyword}</strong> to{" "}
-            <strong>{crisisResources.textNumber}</strong>
-            <span className="text-slate-500">· 24/7 · confidential</span>
-          </p>
-        </div>
+          {" or text "}
+          <strong>{crisisResources.textKeyword}</strong> to{" "}
+          {crisisResources.textNumber}. Available 24/7.
+        </p>
 
-        <h1 className="mt-10 text-2xl font-bold leading-tight text-brand md:text-3xl">
+        <h1 className="mt-8 text-2xl font-bold leading-tight text-brand md:text-3xl">
           {hook.headline}
         </h1>
         <p className="mt-4 leading-relaxed text-slate-700">{hook.subhead}</p>
@@ -36,9 +28,9 @@ export function Hero() {
 
         <a
           href="#volunteer"
-          className="mt-8 inline-flex items-center gap-1.5 rounded-full border border-brand/15 bg-white px-4 py-2 text-sm font-medium text-brand transition-colors hover:border-accent/40 hover:text-accent"
+          className="mt-8 inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-light"
         >
-          Want to volunteer?
+          Volunteer with us
           <ArrowRight className="h-4 w-4" aria-hidden />
         </a>
       </div>
