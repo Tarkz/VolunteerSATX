@@ -33,12 +33,13 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: |
           set -euo pipefail
-          gcloud run domain-mappings create \
+          gcloud beta run domain-mappings create \
             --project="${GCP_PROJECT_ID}" \
             --region="${GCP_REGION}" \
             --service="${SERVICE}" \
             --domain="${DOMAIN}" \
-            2>&1 || gcloud run domain-mappings describe "${DOMAIN}" \
+            2>&1 || gcloud beta run domain-mappings describe \
+              --domain="${DOMAIN}" \
               --project="${GCP_PROJECT_ID}" \
               --region="${GCP_REGION}" \
               --platform=managed
@@ -49,7 +50,8 @@ jobs:
         run: |
           set -euo pipefail
           echo "=== Add these records in Cloudflare (DNS only / grey cloud) ==="
-          gcloud run domain-mappings describe "${DOMAIN}" \
+          gcloud beta run domain-mappings describe \
+            --domain="${DOMAIN}" \
             --project="${GCP_PROJECT_ID}" \
             --region="${GCP_REGION}" \
             --platform=managed \
