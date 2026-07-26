@@ -14,7 +14,7 @@ export function SiteFooter() {
         </p>
         <p className="text-xs text-blue-200/70">
           Concept mockup for portfolio — not affiliated with Stop Now
-          Foundation. EIN {org.ein}.
+          Foundation.
         </p>
       </div>
     </footer>

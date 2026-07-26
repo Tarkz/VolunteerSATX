@@ -2,7 +2,6 @@ export const org = {
   name: "Stop Now Foundation",
   city: "San Antonio, Texas",
   email: "info@stopnowfoundation.org",
-  ein: "99-0636212",
 };
 
 export const crisisResources = {
@@ -57,6 +56,6 @@ export const whoWeAre = {
   bullets: [
     "Survivor-led and trauma-informed",
     "Founded in San Antonio, active in 32+ states",
-    "501(c)(3) — EIN 99-0636212",
+    "501(c)(3) nonprofit",
   ],
 };
